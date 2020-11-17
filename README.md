@@ -12,7 +12,7 @@ The materials for this tutorial are adapted from the [DengAI: Predicting Disease
 
 A secondary goal of this tutorial is to introduce tools and best practices for reproducibility along the way. These are our main tools. It would be good to install and get acquainted with them before the tutorial:
 
-1. Reproducible environments with [conda](https://docs.conda.io/en/latest/miniconda.html), and environment manager.
+1. Reproducible environments with [conda](https://docs.conda.io/en/latest/miniconda.html), an environment manager.
 2. A standardized, flexible project structure with [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/).
 2. Easy code review and change tracking with [nbautoexport](https://github.com/drivendataorg/nbautoexport).
 3. [Jupyter](https://jupyter.org/) notebooks/lab for [literate programming](https://en.wikipedia.org/wiki/Literate_programming).
