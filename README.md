@@ -66,12 +66,11 @@ or
 ```bash
 conda install nbautoexport --channel conda-forge
 ```
-Then you can register `nbautoexport` to run in our repo while using Jupyter Notebook or Jupyter Lab. We'll point it at our `notebooks` subdirectory so that anything we run there will be automatically exported.
+Then you can register `nbautoexport` to run in our repo while using Jupyter Notebook or Jupyter Lab. 
 ```bash
 nbautoexport install
-nbautoexport configure notebooks
 ```
-It's as easy as that!
+In a new repository, you'd also run `nbautoexport configure notebooks/` to set up that directory by generating a `.nbautoexport` file. In this case, we've already done that.
 
 ### Running the notebook
 
