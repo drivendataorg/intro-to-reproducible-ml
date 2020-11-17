@@ -51,7 +51,10 @@ filterwarnings('ignore')
 # 
 # This dataset has two cities in it: San Juan, Puerto Rico (right) and Iquitos, Peru (left). Since we hypothesize that the spread of dengue may follow different patterns between the two, we will divide the dataset, train separate models for each city, and then join our predictions before making our final submission.
 
-DATA_DIR = Path('../data/raw/')
+PROJ_ROOT = Path().resolve().parent
+DATA_DIR = PROJ_ROOT / "data" / "raw"
+print("PROJ_ROOT :", PROJ_ROOT)
+print("DATA_DIR :", DATA_DIR)
 
 
 # As part of the [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/) project structure, we recommend keeping data in a `data/` directory, and further having a `data/raw/` subdirectory where the raw data lives unchanging.
