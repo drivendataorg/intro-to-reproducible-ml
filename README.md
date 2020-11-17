@@ -1,9 +1,7 @@
 intro-to-reproducible-ml
 ==============================
 
-Materials for tutorial @ Good Tech Fest DS - Nov. 2020
-
-This repository contains materials for the "Introduction to Reproducible Machine Learning in Python" tutorial session at [Good Tech Fest Data Science Day 2020](https://www.goodtechfest.com/home).
+This repository contains materials for the "Introduction to Reproducible Machine Learning in Python" tutorial session at [Good Tech Fest Data Science Day, November 2020](https://www.goodtechfest.com/home).
 
 > Come ready to get your data science on. The goal of this workshop is to build your first machine learning model while learning the best tools and practices for reproducibility. You’ll need a laptop and some enthusiasm to get started. We will start from raw data and end by making a set of predictions. This will be an applied workshop looking at a real problem. We’ll be modeling the spread of dengue fever based on time, climate, and location. This will be based on a competition running on DrivenData. The primary goal is for participants to understand that machine learning isn’t magic. In the time it takes to run a tutorial, we can load a dataset, train a model, and make predictions. The secondary goal is to introduce participants to best practices for reproducible machine learning throughout the modeling pipeline. One of the focuses of the example will be demonstrating the resources where participants can learn more about each of the steps in the process.
 
