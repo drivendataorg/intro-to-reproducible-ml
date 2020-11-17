@@ -13101,9 +13101,9 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">PROJ_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
-<span class="n">RAW_DATA_DIR</span> <span class="o">=</span> <span class="n">PROJ_ROOT</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;raw&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">PROJ_ROOT</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">RAW_DATA_DIR</span><span class="p">)</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">PROJ_ROOT</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;raw&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PROJ_ROOT :&quot;</span><span class="p">,</span> <span class="n">PROJ_ROOT</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DATA_DIR :&quot;</span><span class="p">,</span> <span class="n">DATA_DIR</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13120,8 +13120,8 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>/Users/jqi/repos/intro-to-reproducible-ml
-/Users/jqi/repos/intro-to-reproducible-ml/data/raw
+<pre>PROJ_ROOT : /Users/jqi/repos/intro-to-reproducible-ml
+DATA_DIR : /Users/jqi/repos/intro-to-reproducible-ml/data/raw
 </pre>
 </div>
 </div>
@@ -13149,8 +13149,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Training-some-models">Training some models<a class="anchor-link" href="#Training-some-models">&#182;</a></h2><p>Now that we've explored this data, it's time to start modeling. We will be using the scikit-learn (a.k.a. sklearn) library for machine learning. It's a mature library with a comprehensive set of tools, a thoughtful opinionated design, and good documentation. We highly recommend starting with scikit-learn for machine learning.</p>
-<p>Let's import the parts of scikit-learn that we will be using.</p>
+<h2 id="Training-some-models">Training some models<a class="anchor-link" href="#Training-some-models">&#182;</a></h2><p>Now that we've explored this data, it's time to start modeling. We will be using the scikit-learn (a.k.a. sklearn) library for machine learning. It's a mature library with a comprehensive set of tools and good documentation. It also has an opinionated design that emphasizes reuse and reproducibility through its object-oriented style and "pipeline" concepts. We highly recommend starting with scikit-learn for most machine learning situations.</p>
+<p>We start by importing the parts of scikit-learn that we will be using.</p>
 
 </div>
 </div>
@@ -13168,6 +13168,10 @@ div#notebook {
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">PoissonRegressor</span>
+
+<span class="c1"># For pipeline visualization</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">set_config</span>
+<span class="n">set_config</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="s1">&#39;diagram&#39;</span><span class="p">)</span> 
 </pre></div>
 
     </div>
@@ -13178,7 +13182,14 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's load the training data again so we have clean, fresh dataframes that haven't been modified.</p>
+<h3 id="Data">Data<a class="anchor-link" href="#Data">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, let's load the training data again so we have clean, fresh dataframes that haven't been modified.</p>
 
 </div>
 </div>
@@ -13188,8 +13199,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_features_df</span><span class="p">,</span> <span class="n">iq_features_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">RAW_DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;dengue_features_train.csv&quot;</span><span class="p">)</span>
-<span class="n">sj_labels_df</span><span class="p">,</span> <span class="n">iq_labels_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">RAW_DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;dengue_labels_train.csv&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_features_df</span><span class="p">,</span> <span class="n">iq_features_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;dengue_features_train.csv&quot;</span><span class="p">)</span>
+<span class="n">sj_labels_df</span><span class="p">,</span> <span class="n">iq_labels_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;dengue_labels_train.csv&quot;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sj_features_df&quot;</span><span class="p">,</span> <span class="n">sj_features_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iq_features_df&quot;</span><span class="p">,</span> <span class="n">iq_features_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -13226,7 +13237,7 @@ iq_labels_df (520, 1)
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now let's define our preprocessing steps. We'll be doing two</p>
+<p>Next, we'll split our data into training and evaluation. It's important when evaluating model performance to do so on data not used for training. Since we have time series data, we'll do a strict-future holdout for our evaluation. Our data is already sorted by time, so we can use sklearn's <code>train_test_split</code> function <em>without shuffling</em>.</p>
 
 </div>
 </div>
@@ -13234,75 +13245,6 @@ iq_labels_df (520, 1)
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">forward_fill</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
-
-<span class="n">forward_imputer</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">forward_fill</span><span class="p">)</span>
-
-<span class="n">preprocessing_steps</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;standard_scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;forward_imputer&#39;</span><span class="p">,</span> <span class="n">forward_imputer</span><span class="p">)</span>
-<span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features_to_use</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;reanalysis_specific_humidity_g_per_kg&#39;</span><span class="p">,</span> 
-                 <span class="s1">&#39;reanalysis_dew_point_temp_k&#39;</span><span class="p">,</span> 
-                 <span class="s1">&#39;station_avg_temp_c&#39;</span><span class="p">,</span> 
-                 <span class="s1">&#39;station_min_temp_c&#39;</span><span class="p">]</span>
-
-<span class="n">sj_preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
-    <span class="n">transformers</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="n">preprocessing_steps</span><span class="p">,</span> <span class="n">features_to_use</span><span class="p">)</span>
-    <span class="p">],</span>
-    <span class="n">remainder</span> <span class="o">=</span> <span class="s2">&quot;drop&quot;</span>
-<span class="p">)</span>
-
-<span class="n">iq_preprocessor</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">sj_preprocessor</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Now we can take a look at the smaller dataset and see that it's ready to start modelling:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Split-it-up!">Split it up!<a class="anchor-link" href="#Split-it-up!">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Since this is a timeseries model, we'll use a strict-future holdout set when we are splitting our train set and our test set. We'll keep around three quarters of the original data for training and use the rest to test. We'll do this separately for our San Juan model and for our Iquitos model.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_X_train</span><span class="p">,</span> <span class="n">sj_X_eval</span><span class="p">,</span> <span class="n">sj_y_train</span><span class="p">,</span> <span class="n">sj_y_eval</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
@@ -13328,7 +13270,88 @@ iq_labels_df (520, 1)
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Training-time">Training time<a class="anchor-link" href="#Training-time">&#182;</a></h2><p>This is where we start getting down to business. As we noted above, we'll train a NegativeBinomial model, which is often used for count data where the mean and the variance are very different. In this function we have three steps. The first is to specify the functional form</p>
+<h3 id="Data-Proprocessing">Data Proprocessing<a class="anchor-link" href="#Data-Proprocessing">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's define our preprocessing steps. We'll be doing two main things:</p>
+<ul>
+<li><strong>Scaling</strong>: This step is not critical but often useful to generally do as a rule of thumb. In our case, scaling will help the model regularize features more effectively. It will also give us model weights that can be compared across features and interpreted as feature importances. </li>
+<li><strong>Missing Value Imputation</strong>: This step is necessary. Most machine learning models don't handle missing values. Because we have a time series problem, we'll use forward-fill imputation as a first pass approach, where we fill using the previous timestep's value. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>sklearn doesn't have a forward-fill imputation transformer, so we'll need to make our own. This is a good demonstration of sklearn's <code>FunctionTransformer</code> class, which you can use to implement simple functions into sklearn transformers. We define a function <code>forward_fill</code> which takes a numpy array, uses the <code>ffill</code> functionality from pandas, and then returns the data back as a numpy array.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">forward_fill</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">forward_imputer</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">forward_fill</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, we'll stitch together our preprocessing steps into a preprocessor object that can be fitted and reused. We will use the <code>ColumnTransformer</code> class, which is the way sklearn expects you to pull columns out of a pandas dataframe and apply data transformations. In setting up the <code>ColumnTransformer</code>, we chain together our two preprocessing steps into one transformer using <code>Pipeline</code>, and then we set that we want to apply it to our subset of features. We will have the <code>ColumnTransformer</code> drop the remainder of the dataframe columns.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features_to_use</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;reanalysis_specific_humidity_g_per_kg&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;reanalysis_dew_point_temp_k&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;station_avg_temp_c&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;station_min_temp_c&quot;</span>
+<span class="p">]</span>
+
+<span class="n">preprocessing_steps</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;standard_scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">&quot;forward_imputer&quot;</span><span class="p">,</span> <span class="n">forward_imputer</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">sj_preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="n">transformers</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="n">preprocessing_steps</span><span class="p">,</span> <span class="n">features_to_use</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">remainder</span> <span class="o">=</span> <span class="s2">&quot;drop&quot;</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We actually will need a second preprocessor object. This is because the scaling is fit to data, so we need one for San Juan and another for Iquitos. You'll notice we named the preprocessor we just created <code>sj_preprocessor</code>. We can use the <code>clone</code> function make a copy for <code>iq</code>.</p>
 
 </div>
 </div>
@@ -13336,6 +13359,34 @@ iq_labels_df (520, 1)
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">iq_preprocessor</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">sj_preprocessor</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Pipeline">Pipeline<a class="anchor-link" href="#Pipeline">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we'll wrap up our full modeling workflow, including the Poisson Regression model itself, into sklearn <code>Pipeline</code> objects. We used these earlier to chain our scaling and imputation. Pipelines encapsulate everything into one object with one interface, which makes it easy to train a model, save it for later, reload it, and use it again. It's a valuable tool in making your machine learning models reusable and reproducible.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
@@ -13347,16 +13398,63 @@ iq_labels_df (520, 1)
     <span class="p">(</span><span class="s2">&quot;preprocessor&quot;</span><span class="p">,</span> <span class="n">iq_preprocessor</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;estimator&quot;</span><span class="p">,</span> <span class="n">PoissonRegressor</span><span class="p">())</span>
 <span class="p">])</span>
+
+<span class="n">iq_pipeline</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="3ea3356d-90b1-4abd-bba4-5a3ff4de3d6e" type="checkbox" ><label class="sk-toggleable__label" for="3ea3356d-90b1-4abd-bba4-5a3ff4de3d6e">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('preprocessor',
+                 ColumnTransformer(transformers=[('features',
+                                                  Pipeline(steps=[('standard_scaler',
+                                                                   StandardScaler()),
+                                                                  ('forward_imputer',
+                                                                   FunctionTransformer(func=<function forward_fill at 0x7f9f0fe9c700>))]),
+                                                  ['reanalysis_specific_humidity_g_per_kg',
+                                                   'reanalysis_dew_point_temp_k',
+                                                   'station_avg_temp_c',
+                                                   'station_min_temp_c'])])),
+                ('estimator', PoissonRegressor())])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="3e5c3d3c-0611-43f9-b8f0-5bebc38f65c4" type="checkbox" ><label class="sk-toggleable__label" for="3e5c3d3c-0611-43f9-b8f0-5bebc38f65c4">preprocessor: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('features',
+                                 Pipeline(steps=[('standard_scaler',
+                                                  StandardScaler()),
+                                                 ('forward_imputer',
+                                                  FunctionTransformer(func=<function forward_fill at 0x7f9f0fe9c700>))]),
+                                 ['reanalysis_specific_humidity_g_per_kg',
+                                  'reanalysis_dew_point_temp_k',
+                                  'station_avg_temp_c',
+                                  'station_min_temp_c'])])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="ec904abf-a0bc-425e-a7bb-a23f05dc6a8d" type="checkbox" ><label class="sk-toggleable__label" for="ec904abf-a0bc-425e-a7bb-a23f05dc6a8d">features</label><div class="sk-toggleable__content"><pre>['reanalysis_specific_humidity_g_per_kg', 'reanalysis_dew_point_temp_k', 'station_avg_temp_c', 'station_min_temp_c']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e137502f-4ec8-4bb3-a92e-e37dbe148833" type="checkbox" ><label class="sk-toggleable__label" for="e137502f-4ec8-4bb3-a92e-e37dbe148833">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="0c2db48c-834e-447d-ae33-00e027747857" type="checkbox" ><label class="sk-toggleable__label" for="0c2db48c-834e-447d-ae33-00e027747857">FunctionTransformer</label><div class="sk-toggleable__content"><pre>FunctionTransformer(func=<function forward_fill at 0x7f9f0fe9c700>)</pre></div></div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="5760ea25-4201-4e5d-a751-b7d5ce63a72e" type="checkbox" ><label class="sk-toggleable__label" for="5760ea25-4201-4e5d-a751-b7d5ce63a72e">PoissonRegressor</label><div class="sk-toggleable__content"><pre>PoissonRegressor()</pre></div></div></div></div></div></div></div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, let's fit our models and evaluate them!</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sj_X_train</span><span class="p">,</span> <span class="n">sj_y_train</span><span class="p">)</span>
@@ -13392,119 +13490,17 @@ iq_labels_df (520, 1)
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_y_eval</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>total_cases</th>
-    </tr>
-    <tr>
-      <th>year</th>
-      <th>weekofyear</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="5" valign="top">2003</th>
-      <th>44</th>
-      <td>39</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>39</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>34</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>30</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>37</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <th>...</th>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th rowspan="5" valign="top">2008</th>
-      <th>13</th>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>5</td>
-    </tr>
-  </tbody>
-</table>
-<p>234 rows × 1 columns</p>
-</div>
-</div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We'll plot the predictions against the true case counts for both models.</p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">figs</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
@@ -13552,9 +13548,69 @@ iq_labels_df (520, 1)
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Reflecting-on-our-performance">Reflecting on our performance<a class="anchor-link" href="#Reflecting-on-our-performance">&#182;</a></h2><p>These graphs can actually tell us a lot about where our model is going wrong and give us some good hints about where investments will improve the model performance. For example, we see that our model in blue does track the seasonality of Dengue cases. However, the timing of the seasonality of our predictions has a mismatch with the actual results. One potential reason for this is that our features don't look far enough into the past--that is to say, we are asking to predict cases at the same time as we are measuring percipitation. Because dengue is misquito born, and the misquito lifecycle depends on water, we need to take both the life of a misquito and the time between infection and symptoms into account when modeling dengue. This is a critical avenue to explore when improving this model.</p>
-<p>The other important error is that our predictions are relatively consistent--we miss the spikes that are large outbreaks. One reason is that we don't take into account the contagiousness of dengue. A possible way to account for this is to build a model that progressively predicts a new value while taking into account the previous prediction. By training on the dengue outbreaks and then using the predicted number of patients in the week before, we can start to model this time dependence that the current model misses.</p>
-<p>So, we know we're not going to win this thing, but let's submit the model anyway!</p>
+<h2 id="Reflecting-on-our-performance">Reflecting on our performance<a class="anchor-link" href="#Reflecting-on-our-performance">&#182;</a></h2><p>These graphs can actually tell us a lot about where our model is going wrong and give us some good hints about where investments will improve the model performance. For example, we see that our model in orange does track the seasonality of Dengue cases. However, the timing of the seasonality of our predictions has a mismatch with the actual results. One potential reason for this is that our features don't look far enough into the past—that is to say, we are asking to predict cases at the same time as we are measuring percipitation. Because dengue is mosquito-borne, and the mosquito lifecycle depends on water, we need to take both the life of a mosquito and the time between infection and symptoms into account when modeling dengue. This is a critical avenue to explore when improving this model.</p>
+<p>The other important error is that our predictions are relatively consistent—we miss the spikes that are large outbreaks. One reason is that we don't take into account the contagiousness of dengue. A possible way to account for this is to build a model that progressively predicts a new value while taking into account the previous prediction. By training on the dengue outbreaks and then using the predicted number of patients in the week before, we can start to model this time dependence that the current model misses.</p>
+<p>We also know that Poisson regression is not the best suited for this dataset. We saw earlier than our variance in counts is higher than the mean, making it negative binomial regression more appropriate. While sklearn doesn't offer negative binomial regression, you could use the <a href="https://www.statsmodels.org/stable/generated/statsmodels.genmod.families.family.NegativeBinomial.html">statsmodel</a> package. You can also take advantage of sklearn's extendability to wrap statsmodel's <code>NegativeBinomial</code> model inside custom sklearn estimator, so that we can plug it into our sklearn pipeline. More about custom sklearn estimators is available in their <a href="https://scikit-learn.org/stable/developers/develop.html#rolling-your-own-estimator">documentation</a>.</p>
+<p>So, we know we're not going to win this thing, but let's submit the predictions anyway!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Generating-a-submission">Generating a submission<a class="anchor-link" href="#Generating-a-submission">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, we want to retrain our models on the full dataset.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sj_features_df</span><span class="p">,</span> <span class="n">sj_labels_df</span><span class="p">)</span>
+<span class="n">iq_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iq_features_df</span><span class="p">,</span> <span class="n">iq_labels_df</span><span class="p">)</span>
+<span class="kc">None</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/jqi/miniconda3/envs/intro-to-reproducible-ml/lib/python3.8/site-packages/sklearn/utils/validation.py:73: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  return f(**kwargs)
+/Users/jqi/miniconda3/envs/intro-to-reproducible-ml/lib/python3.8/site-packages/sklearn/utils/validation.py:73: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  return f(**kwargs)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we'll load our test data and generate predictions.</p>
 
 </div>
 </div>
@@ -13564,7 +13620,7 @@ iq_labels_df (520, 1)
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_test_df</span><span class="p">,</span> <span class="n">iq_test_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">RAW_DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;dengue_features_test.csv&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_test_df</span><span class="p">,</span> <span class="n">iq_test_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;dengue_features_test.csv&quot;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sj_test_df&quot;</span><span class="p">,</span> <span class="n">sj_test_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iq_test_df&quot;</span><span class="p">,</span> <span class="n">iq_test_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -13608,24 +13664,21 @@ iq_test_df (156, 21)
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then, we'll load up the submission format and plug our predictions in.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_submission_df</span><span class="p">,</span> <span class="n">iq_submission_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">RAW_DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;submission_format.csv&quot;</span><span class="p">)</span>
-
-<span class="n">sj_submission_df</span><span class="p">[</span><span class="s2">&quot;total_cases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj_test_preds</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">iq_submission_df</span><span class="p">[</span><span class="s2">&quot;total_cases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iq_test_preds</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-
-<span class="n">submission_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span>
-    <span class="s2">&quot;sj&quot;</span><span class="p">:</span> <span class="n">sj_submission_df</span><span class="p">,</span> 
-    <span class="s2">&quot;iq&quot;</span><span class="p">:</span> <span class="n">iq_submission_df</span>
-<span class="p">},</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;city&quot;</span><span class="p">])</span>
-
-<span class="c1"># submission_df.to_csv(&quot;&quot;)</span>
-
-<span class="n">submission_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="n">PROJ_ROOT</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;processed&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OUTPUT_DIR : &quot;</span><span class="p">,</span> <span class="n">OUTPUT_DIR</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13638,7 +13691,51 @@ iq_test_df (156, 21)
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[16]:</div>
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>OUTPUT_DIR :  /Users/jqi/repos/intro-to-reproducible-ml/data/processed
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sj_submission_df</span><span class="p">,</span> <span class="n">iq_submission_df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s2">&quot;submission_format.csv&quot;</span><span class="p">)</span>
+
+<span class="n">sj_submission_df</span><span class="p">[</span><span class="s2">&quot;total_cases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj_test_preds</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">iq_submission_df</span><span class="p">[</span><span class="s2">&quot;total_cases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iq_test_preds</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1"># Rejoin SJ and IQ together. </span>
+<span class="n">submission_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span>
+    <span class="s2">&quot;sj&quot;</span><span class="p">:</span> <span class="n">sj_submission_df</span><span class="p">,</span> 
+    <span class="s2">&quot;iq&quot;</span><span class="p">:</span> <span class="n">iq_submission_df</span>
+<span class="p">},</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;city&quot;</span><span class="p">])</span>
+
+<span class="n">submission_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">OUTPUT_DIR</span> <span class="o">/</span> <span class="s2">&quot;submission.csv&quot;</span><span class="p">)</span>
+
+<span class="n">submission_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
 
 
 
@@ -13674,26 +13771,46 @@ iq_test_df (156, 21)
   </thead>
   <tbody>
     <tr>
-      <th rowspan="5" valign="top">sj</th>
-      <th rowspan="5" valign="top">2008</th>
+      <th rowspan="10" valign="top">sj</th>
+      <th rowspan="10" valign="top">2008</th>
       <th>18</th>
-      <td>32</td>
+      <td>28</td>
     </tr>
     <tr>
       <th>19</th>
-      <td>31</td>
+      <td>26</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>38</td>
+      <td>36</td>
     </tr>
     <tr>
       <th>21</th>
-      <td>33</td>
+      <td>29</td>
     </tr>
     <tr>
       <th>22</th>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>24</th>
       <td>35</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>41</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>43</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>42</td>
     </tr>
   </tbody>
 </table>
@@ -13706,15 +13823,18 @@ iq_test_df (156, 21)
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="https://community.drivendata.org/uploads/default/original/1X/7af03e4997e8487057a77f9022691b9e9cb525f7.png" alt=""></p>
-<p>Alright, it's a start! To build your own model you can grab this notebook <a href="https://github.com/drivendata/benchmarks">from our benchmarks repo</a>.</p>
-<p>Good luck, and enjoy!</p>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
 
+    </div>
 </div>
 </div>
+
 </div>
     </div>
   </div>
