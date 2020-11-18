@@ -193,7 +193,7 @@ plt.xticks(rotation=45, ha='right')
 plt.title('San Juan Variable Correlations');
 
 
-# plot san juan
+# plot iquitos
 fig, ax = plt.subplots(figsize=(10, 8))
 iq_corr_heat = sns.heatmap(iq_correlations, ax=ax, vmin=-1, vmax=1)
 plt.xticks(rotation=45, ha='right') 
