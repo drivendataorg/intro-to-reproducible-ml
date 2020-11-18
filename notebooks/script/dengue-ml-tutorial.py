@@ -107,6 +107,9 @@ sj_train_features.head()
 sj_train_features.dtypes
 
 
+sj_train_features.describe()
+
+
 # #### Remove `week_start_date`
 
 # There are _a lot_ of climate variables here, but the first thing that we'll note is that the `week_start_date` is included in the feature set. This makes it easier for competitors to create time based features, but for this first-pass model, we'll drop that column since we shouldn't use it as a feature in our model.
@@ -150,8 +153,14 @@ pd.isnull(sj_train_features).any()
 # 
 # Our target variable, `total_cases` is a non-negative integer, which means we're looking to make some **count predictions**. Let's see how our labels are distributed!
 
+sj_train_labels.describe().T
+
+
 sj_train_labels.hist()
 plt.title('Total Cases in San Juan');
+
+
+iq_train_labels.describe().T
 
 
 iq_train_labels.hist()
@@ -179,14 +188,14 @@ iq_correlations = iq_train_features.corr()
 
 # plot san juan
 fig, ax = plt.subplots(figsize=(10,8))
-sj_corr_heat = sns.heatmap(sj_correlations, ax=ax)
+sj_corr_heat = sns.heatmap(sj_correlations, ax=ax, vmin=-1, vmax=1)
 plt.xticks(rotation=45, ha='right') 
 plt.title('San Juan Variable Correlations');
 
 
 # plot san juan
 fig, ax = plt.subplots(figsize=(10, 8))
-iq_corr_heat = sns.heatmap(iq_correlations, ax=ax)
+iq_corr_heat = sns.heatmap(iq_correlations, ax=ax, vmin=-1, vmax=1)
 plt.xticks(rotation=45, ha='right') 
 plt.title('Iquitos Variable Correlations');
 
@@ -201,7 +210,7 @@ plt.title('Iquitos Variable Correlations');
      .drop('total_cases') # don't compare with myself
      .sort_values(ascending=False)
      .plot
-     .barh());
+     .barh(xlim=(-.25, .25)));
 
 
 # Iquitos
@@ -210,7 +219,7 @@ plt.title('Iquitos Variable Correlations');
      .drop('total_cases') # don't compare with myself
      .sort_values(ascending=False)
      .plot
-     .barh());
+     .barh(xlim=(-.25, .25)));
 
 
 # ### A few observations
