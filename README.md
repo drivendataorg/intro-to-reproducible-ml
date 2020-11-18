@@ -12,8 +12,8 @@ A secondary goal of this tutorial is to introduce tools and best practices for r
 
 1. **environments:** Using an environment manager like [conda](https://docs.conda.io/en/latest/) allows you to avoid running into pesky dependency conflicts down the road.
 2. **project structure**: [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/) allows for a standardized, flexible project structure. That means you can find the code you're looking for more quickly and easily in any project.
-3. **the past**: Notebooks are great for analysis and exploration, but less so for code reviews and tracking changes. [nbautoexport](https://github.com/drivendataorg/nbautoexport) simplifies that process by automatically exporting notebooks to more easily diffable scripts.
-4. **analysis**: [Jupyter](https://jupyter.org/) notebooks/lab are a great tool for [literate programming](https://en.wikipedia.org/wiki/Literate_programming). Individually executable cells allow you to weave narrative, code, and visualizations together.
+3. **analysis**: [Jupyter](https://jupyter.org/) notebooks/lab are a great tool for [literate programming](https://en.wikipedia.org/wiki/Literate_programming). Individually executable cells allow you to weave narrative, code, and visualizations together.
+4. **the past**: Notebooks are great for analysis and exploration, but less so for code reviews and tracking changes. [nbautoexport](https://github.com/drivendataorg/nbautoexport) simplifies that process by automatically exporting notebooks to more easily diffable scripts.
 5. **ML pipelines**: We recommend using [scikit-learn](https://scikit-learn.org/) for self-contained, reusable ML pipelines.
 
 If you are participating through the conference, please join the `#introduction-to-machine-learning-in-python` Slack channel.
