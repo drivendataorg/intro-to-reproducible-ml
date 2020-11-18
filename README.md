@@ -10,13 +10,13 @@ This is a tutorial for Introduction to Reproducible Machine Learning in Python a
 
 The materials for this tutorial are adapted from the [DengAI: Predicting Disease Spread](https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/) practice competition on DrivenData. We'll walk you through the competition, show you how to load the data, and do a quick exploratory analysis. Then, we will train a simple model, make some predictions, and submit those predictions to the competition.
 
-A secondary goal of this tutorial is to introduce tools and best practices for reproducibility along the way. These are our main tools. It would be good to install and get acquainted with them before the tutorial:
+A secondary goal of this tutorial is to introduce tools and best practices for reproducibility along the way. These are our main tools. It would be good to install and get acquainted with them before the tutorial. These tools allow you to reproduce...
 
-1. Reproducible environments with [conda](https://docs.conda.io/en/latest/miniconda.html), an environment manager.
-2. A standardized, flexible project structure with [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/).
-3. Easy code review and change tracking with [nbautoexport](https://github.com/drivendataorg/nbautoexport).
-4. [Jupyter](https://jupyter.org/) notebooks/lab for [literate programming](https://en.wikipedia.org/wiki/Literate_programming).
-5. [scikit-learn](https://scikit-learn.org/) for self-contained, reusable ML pipelines
+1. **environments:** Using an environment manager like [conda](https://docs.conda.io/en/latest/) allows you to avoid running into pesky dependency conflicts down the road.
+2. **project structure**: [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/) allows for a standardized, flexible project structure. That means you can find the code you're looking for more quickly and easily in any project.
+3. **the past**: Notebooks are great for analysis and exploration, but less so for code reviews and tracking changes. [nbautoexport](https://github.com/drivendataorg/nbautoexport) simplifies that process by automatically exporting notebooks to more easily diffable scripts.
+4. **analysis**: [Jupyter](https://jupyter.org/) notebooks/lab are a great tool for [literate programming](https://en.wikipedia.org/wiki/Literate_programming). Individually executable cells allow you to weave narrative, code, and visualizations together.
+5. **ML pipelines**: We recommend using [scikit-learn](https://scikit-learn.org/) for self-contained, reusable ML pipelines.
 
 If you are participating through the conference, please join the `#introduction-to-machine-learning-in-python` Slack channel.
 
