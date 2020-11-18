@@ -7,15 +7,14 @@
 # 
 # This is a tutorial for Introduction to Reproducible Machine Learning in Python at [Good Tech Fest](https://www.goodtechfest.com/) Data Science Day November 2020. We will be working with dengue fever data from the [DengAI: Predicting Disease Spread](https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/) practice machine learning competition on DrivenData.
 # 
-# This notebook is adapted from the [benchmark walkthrough blog post](https://www.drivendata.co/blog/dengue-benchmark/). This tutorial will walk you through the competition. We will show you how to load the data and do a quick exploratory analysis. Then, we will train a simple model, make some predictions, and then submit those predictions to the competition.
+# This notebook is adapted from the [benchmark walkthrough blog post](https://www.drivendata.co/blog/dengue-benchmark/). This tutorial will walk you through the competition. We will show you how to load the data and do a quick exploratory analysis. Then, we will train a simple model, make some predictions, and finally submit those predictions to the competition.
 # 
-# A secondary goal is to introduce tools and best practices for reproducibility along the way. These are our main tools, some of which we've already introduced:
-# 
-# 1. Reproducible environments with [conda](https://docs.conda.io/en/latest/), and environment manager.
-# 2. A standardized, flexible project structure with [Cookie Cutter Data Science](https://drivendata.github.io/cookiecutter-data-science/).
-# 2. Easy code review and change tracking with [nbautoexport](https://github.com/drivendataorg/nbautoexport).
-# 3. [Jupyter](https://jupyter.org/) notebooks/lab for [literate programming](https://en.wikipedia.org/wiki/Literate_programming).
-# 4. [scikit-learn](https://scikit-learn.org/) for self-contained, reusable ML pipelines
+# A secondary goal of this tutorial is to introduce tools and best practices for reproducibility along the way. These are our main tools, which allow you to reproduce...
+# 1. **environments:** Using an environment manager like [conda](https://docs.conda.io/en/latest/) allows you to avoid running into pesky dependency conflicts down the road.
+# 2. **project structure**: [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/) allows for a standardized, flexible project structure. That means you can find the code you're looking for more quickly and easily in any project.
+# 3. **the past**: Notebooks are great for analysis and exploration, but less so for code reviews and tracking changes. [nbautoexport](https://github.com/drivendataorg/nbautoexport) simplifies that process by automatically exporting notebooks to more easily diffable scripts.
+# 4. **analysis**: [Jupyter](https://jupyter.org/) notebooks/lab are a great tool for [literate programming](https://en.wikipedia.org/wiki/Literate_programming). Individually executable cells allow you to weave narrative, code, and visualizations together.
+# 5. **ML pipelines**: We recommend using [scikit-learn](https://scikit-learn.org/) for self-contained, reusable ML pipelines.
 # 
 # ## Problem Introduction
 # ----------------------
@@ -108,12 +107,16 @@ sj_train_features.head()
 sj_train_features.dtypes
 
 
+# #### Remove `week_start_date`
+
 # There are _a lot_ of climate variables here, but the first thing that we'll note is that the `week_start_date` is included in the feature set. This makes it easier for competitors to create time based features, but for this first-pass model, we'll drop that column since we shouldn't use it as a feature in our model.
 
 # Remove `week_start_date` string.
 sj_train_features.drop('week_start_date', axis=1, inplace=True)
 iq_train_features.drop('week_start_date', axis=1, inplace=True)
 
+
+# #### Check for Missing Values
 
 # Next, let's check to see if we are missing any values in this dataset:
 
@@ -129,8 +132,10 @@ pd.isnull(sj_train_features).any()
      .line(lw=0.8))
 
 plt.title('Vegetation Index over Time')
-plt.xlabel('Time')
+plt.xlabel('Time');
 
+
+# #### Impute Data
 
 # Since these are time-series, we can see the gaps where there are `NaN`s by plotting the data. Since we can't build a model without those values, we'll take a simple approach and just fill those values with the most recent value that we saw up to that point. This is probably a good part of the problem to improve your score by getting smarter.
 
@@ -141,27 +146,31 @@ iq_train_features.fillna(method='ffill', inplace=True)
 pd.isnull(sj_train_features).any()
 
 
-# ## Distribution of labels
+# ### Distribution of Labels
 # 
 # Our target variable, `total_cases` is a non-negative integer, which means we're looking to make some **count predictions**. Let's see how our labels are distributed!
 
 sj_train_labels.hist()
+plt.title('Total Cases in San Juan');
 
 
 iq_train_labels.hist()
+plt.title('Total Cases in Iquitos');
 
 
 # These sorts of right-skewed distributions are pretty typical for count data.
 
-# ## Which inputs strongly correlate with `total_cases`?
+# ### Which inputs strongly correlate with `total_cases`?
 # 
-# Our next step in this process will be to select a subset of features to include in our regression. Our primary purpose here is to get a better understanding of the problem domain rather than eke out the last possible bit of predictive accuracy. The first thing we will do is to add the `total_cases` to our dataframe, and then look at the correlation of that variable with the climate variables.
+# Our next step in this process will be to select a subset of features to include in our regression. Our primary purpose here is to get a better understanding of the problem domain rather than eke out the last possible bit of predictive accuracy.
+# 
+# The first thing we will do is to add the `total_cases` to our dataframe, and then look at the correlation of that variable with the climate variables.
 
 sj_train_features['total_cases'] = sj_train_labels.total_cases
 iq_train_features['total_cases'] = iq_train_labels.total_cases
 
 
-# Compute the data correlation matrix.
+# #### Compute the data correlation matrix
 
 # compute the correlations
 sj_correlations = sj_train_features.corr()
@@ -169,18 +178,22 @@ iq_correlations = iq_train_features.corr()
 
 
 # plot san juan
-sj_corr_heat = sns.heatmap(sj_correlations)
-plt.title('San Juan Variable Correlations')
+fig, ax = plt.subplots(figsize=(10,8))
+sj_corr_heat = sns.heatmap(sj_correlations, ax=ax)
+plt.xticks(rotation=45, ha='right') 
+plt.title('San Juan Variable Correlations');
 
 
-# plot iquitos
-iq_corr_heat = sns.heatmap(iq_correlations)
-plt.title('Iquitos Variable Correlations')
+# plot san juan
+fig, ax = plt.subplots(figsize=(10, 8))
+iq_corr_heat = sns.heatmap(iq_correlations, ax=ax)
+plt.xticks(rotation=45, ha='right') 
+plt.title('Iquitos Variable Correlations');
 
 
 # ### Many of the temperature data are strongly correlated, which is expected. But the `total_cases` variable doesn't have many obvious strong correlations.
 # 
-# Interestingly, `total_cases` seems to only have weak correlations with other variables. Many of the climate variables are much more strongly correlated. Interestingly, the vegetation index also only has weak correlation with other variables. These correlations may give us some hints as to how to improve our model that we'll talk about later in this post. For now, let's take a `sorted` look at `total_cases` correlations.
+# Interestingly, `total_cases` seems to only have weak correlations with other variables. Many of the climate variables are much more strongly correlated. The vegetation index (`ndvi`) also only has weak correlation with other variables. These correlations may give us some hints as to how to improve our model that we'll talk about later in this post. For now, let's take a `sorted` look at `total_cases` correlations.
 
 # San Juan
 (sj_correlations
@@ -188,7 +201,7 @@ plt.title('Iquitos Variable Correlations')
      .drop('total_cases') # don't compare with myself
      .sort_values(ascending=False)
      .plot
-     .barh())
+     .barh());
 
 
 # Iquitos
@@ -197,7 +210,7 @@ plt.title('Iquitos Variable Correlations')
      .drop('total_cases') # don't compare with myself
      .sort_values(ascending=False)
      .plot
-     .barh())
+     .barh());
 
 
 # ### A few observations
